@@ -12,14 +12,13 @@ import Registration from './components/Registration'
 function App() {
   return(
     <>
-        <NavBar>
+        <NavBar/>
           <Routes>
               <Route path="/h" element={<Home/>}/>
               <Route path="/l" element={<Login/>}/>
               <Route path="/r" element={<Registration/>}/>
               
           </Routes>
-        </NavBar>
     </>
   )
 }

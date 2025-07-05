@@ -20,6 +20,11 @@ const NavBar = () => {
               <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
                 Home
               </Button>
+              </Link>
+              <Link to="/r" style={{ textDecoration: 'none' }}>
+              <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
+                Registration
+              </Button>
             </Link>
            </Box> 
         </Toolbar>

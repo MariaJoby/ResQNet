@@ -30,8 +30,8 @@ const NavBar = () => {
               <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
                 Login
               </Button>
-            </Link>
-           </Box> 
+            </Link>           
+            </Box> 
         </Toolbar>
       </AppBar>
     </Box>

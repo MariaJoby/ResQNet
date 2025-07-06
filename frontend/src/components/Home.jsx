@@ -163,7 +163,7 @@ const Home = () => {
               },
               color: '#fff',
             }}
-            href="/products"
+            href="/a"
           >
             Want to know more
           </Button>

@@ -31,21 +31,6 @@ const NavBar = () => {
                 Login
               </Button>
             </Link>
-            <Link to="/d" style={{ textDecoration: 'none' }}>
-              <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
-               Donate
-              </Button>
-            </Link>
-            <Link to="/p" style={{ textDecoration: 'none' }}>
-              <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
-               Patient
-              </Button>
-            </Link>
-            <Link to="/v" style={{ textDecoration: 'none' }}>
-              <Button variant="contained" sx={{ backgroundColor: '#ffffff', color: '#3f51b5', '&:hover': { backgroundColor: '#e8eaf6' } }}>
-               Volunteer
-              </Button>
-            </Link>
            </Box> 
         </Toolbar>
       </AppBar>

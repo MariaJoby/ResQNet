@@ -150,10 +150,10 @@ const Home = () => {
             variant="contained"
             color="success"
             size="large"
-            startIcon={<ShoppingCartCheckoutIcon />}
+            
             href="/products"
           >
-            Browse Products
+              Want to know more
           </Button>
         </Stack>
 

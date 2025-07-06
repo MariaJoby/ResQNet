@@ -1,18 +1,51 @@
 import React, { useState } from 'react';
-import {Box,Button,Card,CardContent,TextField,Typography,LinearProgress,Container,Stack,InputAdornment,} from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  Typography,
+  LinearProgress,
+  Container,
+  Stack,
+  InputAdornment,
+} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Donate = () => {
   const [amount, setAmount] = useState('');
   const [donated, setDonated] = useState(false);
+  const [bankDetails, setBankDetails] = useState({
+    name: '',
+    email: '',
+    accountHolder: '',
+    bankName: '',
+    accountNumber: '',
+    ifsc: '',
+  });
+
+  const handleInputChange = (e) => {
+    setBankDetails({ ...bankDetails, [e.target.name]: e.target.value });
+  };
 
   const handleDonate = () => {
     if (amount && Number(amount) > 0) {
+      // You may validate bank details here
+      console.log({ ...bankDetails, amount });
+
       setDonated(true);
-      // Later: Send data to backend / API
       setTimeout(() => {
         setDonated(false);
         setAmount('');
+        setBankDetails({
+          name: '',
+          email: '',
+          accountHolder: '',
+          bankName: '',
+          accountNumber: '',
+          ifsc: '',
+        });
       }, 5000);
     }
   };
@@ -55,8 +88,55 @@ const Donate = () => {
                   startAdornment: <InputAdornment position="start">₹</InputAdornment>,
                 }}
               />
-              <TextField label="Name (optional)" fullWidth />
-              <TextField label="Email (optional)" type="email" fullWidth />
+
+              <TextField
+                label="Name (optional)"
+                name="name"
+                fullWidth
+                value={bankDetails.name}
+                onChange={handleInputChange}
+              />
+
+              <TextField
+                label="Email (optional)"
+                name="email"
+                type="email"
+                fullWidth
+                value={bankDetails.email}
+                onChange={handleInputChange}
+              />
+
+              <TextField
+                label="Account Holder Name"
+                name="accountHolder"
+                fullWidth
+                value={bankDetails.accountHolder}
+                onChange={handleInputChange}
+              />
+
+              <TextField
+                label="Bank Name"
+                name="bankName"
+                fullWidth
+                value={bankDetails.bankName}
+                onChange={handleInputChange}
+              />
+
+              <TextField
+                label="Account Number"
+                name="accountNumber"
+                fullWidth
+                value={bankDetails.accountNumber}
+                onChange={handleInputChange}
+              />
+
+              <TextField
+                label="IFSC Code"
+                name="ifsc"
+                fullWidth
+                value={bankDetails.ifsc}
+                onChange={handleInputChange}
+              />
 
               <Button
                 variant="contained"

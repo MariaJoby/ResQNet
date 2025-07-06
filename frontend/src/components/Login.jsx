@@ -65,6 +65,7 @@ const Login = () => {
           }}
         />
 
+
         {/* Password */}
         <TextField
           label="Password"
@@ -95,26 +96,6 @@ const Login = () => {
           }}
         >
           Login
-        </Button>
-
-        {/* Links */}
-        <Box textAlign="center" mt={2}>
-          <Button
-            variant="text"
-            size="small"
-            sx={{ color: '#388E3C', fontWeight: 500 }}
-          >
-            Forgot Password?
-          </Button>
-          <br />
-          <Button
-            variant="text"
-            size="small"
-            sx={{ color: '#388E3C', fontWeight: 500 }}
-          >
-            New user? Register
-          </Button>
-        </Box>
       </Paper>
     </Box>
   );

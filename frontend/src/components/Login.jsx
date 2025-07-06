@@ -65,6 +65,7 @@ const Login = () => {
           }}
         />
 
+
         {/* Password */}
         <TextField
           label="Password"
@@ -95,7 +96,6 @@ const Login = () => {
           }}
         >
           Login
-        </Button>
       </Paper>
     </Box>
   );

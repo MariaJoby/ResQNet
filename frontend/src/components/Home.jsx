@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Container, Typography, Box, Paper, Button, Stack } from '@mui/material';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';

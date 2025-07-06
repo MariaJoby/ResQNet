@@ -95,7 +95,7 @@ const Login = () => {
             fontWeight: 600
           }}
         >
-          Login
+          Login</Button>
       </Paper>
     </Box>
   );

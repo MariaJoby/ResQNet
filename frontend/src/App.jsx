@@ -10,7 +10,7 @@ import Login from './components/Login'
 import Registration from './components/Registration'
 import Donate from './components/Donate'
 import Patient from './components/Patient'
-import VolunteerForm from './components/Volunteer'
+import Volunteer from './components/Volunteer'
 
 function App() {
   return(
@@ -22,7 +22,7 @@ function App() {
               <Route path="/r" element={<Registration/>}/>
               <Route path="/d" element={<Donate/>}/>
               <Route path="/p" element={<Patient/>}/>
-              <Route path="/v" element={<VolunteerForm/>}/>
+              <Route path="/v" element={<Volunteer/>}/>
           </Routes>
     </>
   )

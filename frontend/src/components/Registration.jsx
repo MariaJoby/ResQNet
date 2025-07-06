@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
   TextField,
@@ -26,30 +27,58 @@ const Registration = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {};
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const newErrors = {};
 
-    if (!formData.fullName) newErrors.fullName = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.phone) newErrors.phone = "Phone number is required";
-    if (!formData.role) newErrors.role = "Please select a role";
-    if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
+  if (!formData.fullName) newErrors.fullName = "Name is required";
+  if (!formData.email) newErrors.email = "Email is required";
+  if (!formData.phone) newErrors.phone = "Phone number is required";
+  if (!formData.role) newErrors.role = "Please select a role";
+  if (!formData.password) newErrors.password = "Password is required";
+  if (formData.password !== formData.confirmPassword) {
+    newErrors.confirmPassword = "Passwords do not match";
+  }
 
-    setErrors(newErrors);
+  setErrors(newErrors);
+  if (Object.keys(newErrors).length !== 0) return;
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log("User Registered:", formData);
-      // Submit to backend here
-    }
-  };
+  try {
+    const response = await axios.post("http://localhost:5000/api/register", formData);
+    alert(response.data.message || "User registered successfully");
+
+    // Reset form
+    setFormData({
+      fullName: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      role: "",
+    });
+  } catch (err) {
+    console.error(err);
+    const msg =
+      err.response?.data?.message || "Server error, please try again";
+    alert(`❌ ${msg}`);
+  }
+};
+
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>Register to ResQNet</Typography>
+     
+    <Container maxWidth="sm" sx={{ mt: 6 }}>
+    <Box
+        sx={{
+          p: 4,
+          borderRadius: 3,
+          boxShadow: 3,
+          bgcolor: "background.paper",
+        }}
+      >
+        <Typography variant="h4" gutterBottom align="center">
+          Register to ResQNet
+        </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           
@@ -145,16 +174,27 @@ const Registration = () => {
           </Grid>
 
           {/* Submit Button */}
-          <Grid item xs={12}>
-            <Box textAlign="center">
-              <Button type="submit" variant="contained" color="primary">
+    <Grid item xs={12} >
+            <Box display="flex" justifyContent="center" alignItems="center" mt={2}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  backgroundColor: '#388E3C',
+                  '&:hover': { backgroundColor: '#2E7D32' },
+                  px: 4, py: 1.2,
+                }}
+              >
                 Register
               </Button>
             </Box>
           </Grid>
         </Grid>
+          
       </form>
+    </Box>
     </Container>
+   
   );
 };
 

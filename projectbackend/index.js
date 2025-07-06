@@ -1,3 +1,9 @@
+require('dotenv').config();
+
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.JWT_SECRET;
+
+
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -10,6 +16,31 @@ app.use(cors());
 app.use(express.json());
 app.get('/', (_req, res) => res.send('✅ ResQNet registration API running'));
 
+
+app.post('/api/login', async (req, res) => {
+  const { email, password, role } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email, role });
+
+    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+
+    const token = jwt.sign({ id: user._id, role: user.role }, SECRET, { expiresIn: '1h' });
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: { id: user._id, fullName: user.fullName, role: user.role },
+    });
+
+  } catch (err) {
+    console.error('[LOGIN ERROR]', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 // ─────────── Register ───────────
 app.post('/api/register', async (req, res) => {
   try {

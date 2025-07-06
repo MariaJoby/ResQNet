@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {Box,Button,Card,CardContent,Checkbox,Container,FormControlLabel,FormGroup,Stack,TextField,Typography,MenuItem,InputLabel,Select,FormControl} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import axios from 'axios'; // at the top if not already imported
 
 const aidItemsList = [
   'Hearing Aid',
@@ -15,6 +16,25 @@ const RequestAid = () => {
   const [selectedAids, setSelectedAids] = useState([]);
   const [urgency, setUrgency] = useState('');
   const [submitted, setSubmitted] = useState(false);
+const [form, setForm] = useState({
+  fullName: '',
+  address: '',
+  phoneNumber: '',
+  annualIncome: '',
+  urgency: '',
+  disabilityCert: null,
+  incomeCert: null,
+});
+
+const onText = (e) => {
+  const { name, value } = e.target;
+  setForm((prev) => ({ ...prev, [name]: value }));
+};
+
+const onFile = (e) => {
+  const { name, files } = e.target;
+  setForm((prev) => ({ ...prev, [name]: files[0] }));
+};
 
   const handleAidToggle = (item) => {
     setSelectedAids((prev) =>
@@ -24,11 +44,45 @@ const RequestAid = () => {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // For now, just show confirmation
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  /* 1️⃣  Guard: make sure both files exist */
+  if (!form.disabilityCert || !form.incomeCert) {
+    alert("Please upload both required documents.");
+    return;
+  }
+
+  /* 2️⃣  Build the multipart body */
+  const formData = new FormData();
+
+  // text fields
+  formData.append("fullName",      form.fullName);
+  formData.append("address",       form.address);
+  formData.append("phoneNumber",   form.phoneNumber);
+  formData.append("annualIncome",  form.annualIncome);
+  formData.append("urgency",       form.urgency);
+
+  // array → JSON string
+  formData.append("selectedAids", JSON.stringify(selectedAids));
+
+  // files
+  formData.append("disabilityCert", form.disabilityCert);
+  formData.append("incomeCert",     form.incomeCert);
+
+  /* 3️⃣  POST to backend */
+  try {
+    await axios.post("http://localhost:5000/api/request-aid", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
     setSubmitted(true);
-  };
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Error submitting request.");
+  }
+};
+
+
 
   return (
     <Box sx={{ backgroundColor: '#eef6ff', py: 6, minHeight: '100vh' }}>
@@ -45,18 +99,58 @@ const RequestAid = () => {
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <Stack spacing={2}>
-                  <TextField label="Full Name" fullWidth required />
-                  <TextField label="Address" multiline rows={2} fullWidth required />
-                  <TextField label="Phone Number" fullWidth required />
-                  <TextField label="Annual Income" fullWidth required />
-                  <FormControl fullWidth>
-                    <InputLabel>Urgency Level</InputLabel>
-                    <Select value={urgency} onChange={(e) => setUrgency(e.target.value)} required>
-                      <MenuItem value="Low">Low</MenuItem>
-                      <MenuItem value="Moderate">Moderate</MenuItem>
-                      <MenuItem value="High">High</MenuItem>
-                    </Select>
-                  </FormControl>
+  <TextField
+    label="Full Name"
+    name="fullName"             
+    value={form.fullName}         
+    onChange={onText}            
+    fullWidth
+    required
+  />
+
+  <TextField
+    label="Address"
+    name="address"                
+    value={form.address}
+    onChange={onText}
+    multiline
+    rows={2}
+    fullWidth
+    required
+  />
+
+  <TextField
+    label="Phone Number"
+    name="phoneNumber"            
+    value={form.phoneNumber}
+    onChange={onText}
+    fullWidth
+    required
+  />
+
+  <TextField
+    label="Annual Income"
+    name="annualIncome"           
+    value={form.annualIncome}
+    onChange={onText}
+    fullWidth
+    required
+  />
+
+  <FormControl fullWidth required>
+    <InputLabel>Urgency Level</InputLabel>
+    <Select
+      name="urgency"              
+      value={form.urgency}
+      onChange={onText}
+    >
+      <MenuItem value="Low">Low</MenuItem>
+      <MenuItem value="Moderate">Moderate</MenuItem>
+      <MenuItem value="High">High</MenuItem>
+    </Select>
+  </FormControl>
+
+
 
                   {/* Aid Selection */}
 <Typography variant="subtitle1" sx={{ mt: 2 }}>
@@ -106,11 +200,11 @@ const RequestAid = () => {
                   </Typography>
                   <Button variant="outlined" component="label" startIcon={<CloudUploadIcon />}>
                     Upload Disability Certificate
-                    <input type="file" hidden required />
+                    <input type="file"  name="disabilityCert" onChange={onFile} hidden required />
                   </Button>
                   <Button variant="outlined" component="label" startIcon={<CloudUploadIcon />}>
                     Upload Income Certificate
-                    <input type="file" hidden required />
+                    <input type="file" name="incomeCert" onChange={onFile} hidden required />
                   </Button>
 
                   <Button type="submit" variant="contained" color="primary" size="large">

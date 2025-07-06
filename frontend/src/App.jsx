@@ -11,6 +11,7 @@ import Registration from './components/Registration'
 import Donate from './components/Donate'
 import Patient from './components/Patient'
 import Volunteer from './components/Volunteer'
+import About from './components/About'
 
 function App() {
   return(
@@ -23,6 +24,7 @@ function App() {
               <Route path="/d" element={<Donate/>}/>
               <Route path="/p" element={<Patient/>}/>
               <Route path="/v" element={<Volunteer/>}/>
+              <Route path="/a" element={<About/>}/>
           </Routes>
     </>
   )
